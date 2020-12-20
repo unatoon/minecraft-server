@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: mc
+  name: mc
+spec:
+  selector:
+    matchLabels:
+      app: mc
+  serviceName: mc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mc
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: mc
+          image: ghcr.io/unatoon/minecraft-server:1
+          ports:
+            - containerPort: 25565
+              name: mc
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: EULA
+              value: "TRUE"
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "pd-ssd"
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: mc
+  name: mc
+spec:
+  selector:
+    app: mc
+  type: LoadBalancer
+  ports:
+    - port: 25565
+      targetPort: mc
