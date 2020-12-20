@@ -28,6 +28,27 @@ spec:
           env:
             - name: EULA
               value: "TRUE"
+          startupProbe:
+            tcpSocket:
+              port: 25565
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 25565
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            tcpSocket:
+              port: 25565
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 10
+            successThreshold: 1
+            timeoutSeconds: 1
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -37,16 +58,3 @@ spec:
         resources:
           requests:
             storage: 10Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: mc
-  name: mc
-spec:
-  selector:
-    app: mc
-  type: LoadBalancer
-  ports:
-    - port: 25565
-      targetPort: mc
