@@ -16,6 +16,10 @@ spec:
     spec:
       imagePullSecrets:
         - name: ghcr
+      securityContext:
+        runAsUser: 61000
+        runAsGroup: 61000
+        fsGroup: 61000
       containers:
         - name: mc
           image: ghcr.io/unatoon/minecraft-server:1
@@ -28,6 +32,13 @@ spec:
           envFrom:
             - configMapRef:
                 name: mc
+          resources:
+            requests:
+              memory: "4500Mi"
+              cpu: "2000m"
+            limits:
+              memory: "4500Mi"
+              cpu: "2000m"
           startupProbe:
             tcpSocket:
               port: 25565

@@ -5,3 +5,12 @@ metadata:
   name: mc
 data:
   EULA: "TRUE"
+  TZ: "Asia/Tokyo"
+  VERSION: "1.16.4"
+  DIFFICULTY: "normal"
+  MODE: "survival"
+  MOTD: "UNA WORLD"
+  WHITELIST: "unatoon"
+  UID: "61000"
+  GID: "61000"
+  MEMORY: "4G"
