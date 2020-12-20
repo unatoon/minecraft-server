@@ -25,9 +25,9 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-          env:
-            - name: EULA
-              value: "TRUE"
+          envFrom:
+            - configMapRef:
+                name: mc
           startupProbe:
             tcpSocket:
               port: 25565
